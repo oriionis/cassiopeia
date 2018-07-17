@@ -26,6 +26,19 @@ def get_file(study,series,file_name):
         file_handle,
         mimetype='application/dicom')
 
+@app.route("/dcm/<report_file>")
+def get_report_file(report_file):
+    print(report_file)
+    files_loader = GdriveFilesLoader()
+    file_handle = files_loader.get_file(report_file)
+    if file_handle is None:
+        print ("File handle is None")
+        abort(404)
+    return send_file(
+        file_handle,
+        mimetype='application/pdf')
+
+
 if __name__ == "__main__":
     logging.getLogger('backoff').addHandler(logging.StreamHandler())
     logging.getLogger('backoff').setLevel(logging.INFO)
